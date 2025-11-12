@@ -1,0 +1,33 @@
+{% load static %}
+<footer>
+    <div class="footer-container">
+        <div class="logo">
+            <img src="{% static 'images/a1.png' %}" alt="Логотип компании" class="logo">
+        </div>
+        <div class="footer-contacts">
+            <p>8-812-642-99-04</p>
+            <p>ask.piter@bk.ru</p>
+            <p>Бумажная ул., 16/1, оф. 613, Санкт-Петербург</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+footer {
+    background: #333;
+    color: white;
+    padding: 30px 0;
+    margin-top: 50px;
+}
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+.footer-contacts p {
+    margin: 5px 0;
+}
+</style>

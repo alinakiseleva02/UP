@@ -1,29 +1,10 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Лендинг</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<header class="header">
-    <div class="header__container">
-        <div class="header__logo">
-            <img src="images/a1.png" alt="Логотип компании" class="logo">
-        </div>
-        <div class="header__icon">
-            <img src="images/a2.png" alt="Иконка меню" class="icon">
-        </div>
-    </div>
-</header>
-
-
-<!-- 2 фрейм -->
-
+{% block content %}
 <section class="main-frame">
     <div class="frame-container">
-        <img src="images/b1.png" alt="Дом мечты" class="frame-background">
+        <img src="{% static 'images/b1.png' %}" alt="Дом мечты" class="frame-background">
         <div class="dark-overlay"></div>
         <div class="frame-content">
             <h1 class="main-title">Построить дом вашей мечты, от идеи до реализации</h1>
@@ -47,7 +28,7 @@
                         <h3 class="block-title">Как мы работаем?</h3>
                     </div>
                     <p class="block-text">
-                        Наша компания работает по принципу одного окна: вы приходите к нам со своим проектом или
+                        Наша компания работает по принципу одного окна: вы приходите к нам со своим проектом или
                         заказываете у нас проектирование, а все остальное до новоселья мы берем на себя
                     </p>
                 </div>
@@ -66,233 +47,24 @@
     </div>
 </section>
 
-
-<!-- 3 фрейм -->
-
-<section class="history-section">
-    <div class="history-container">
-        <div class="history-image">
-            <img src="images/с1.png" alt="Наша история" class="image">
-        </div>
-        <div class="history-content">
-            <div class="content-block">
-                <h2 class="section-title">Наша история</h2>
-                <div class="text-content">
-                    <p class="history-text">
-                        Архитектурно-строительная компания Ardizzoni основана в 2006 году. Мы предлагаем комплексный
-                        подход к строительству загородных домов. Наша единая команда занимается как проектированием, так
-                        и строительством, что позволяет эффективно организовать пространство для жизни
-                    </p>
-                </div>
+<!-- Статистика -->
+<section class="stats-section">
+    <div class="container">
+        <h2>Наша статистика</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">{{ projects_count }}+</div>
+                <div class="stat-label">Завершенных проектов</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ employees_count }}+</div>
+                <div class="stat-label">Профессиональных сотрудников</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ customers_count }}+</div>
+                <div class="stat-label">Довольных клиентов</div>
             </div>
         </div>
     </div>
 </section>
-
-
-<!-- 4 фрейм -->
-
-<div class="container">
-    <div class="top-line"></div>
-
-    <header>
-        <h1>Как мы работаем?</h1>
-        <p class="subtitle">Прозрачный процесс строительства от знакомства до сдачи объекта</p>
-    </header>
-
-    <div class="process">
-        <div class="process-step">
-            <div class="step-circle">
-                <i class="fas fa-handshake"></i>
-            </div>
-            <div class="step-title">Знакомство</div>
-            <div class="step-description">Обсуждение проекта и расчет сметы</div>
-        </div>
-
-        <div class="process-step">
-            <div class="step-circle">
-                <i class="fas fa-gift"></i>
-            </div>
-            <div class="step-title">Бесплатные бонусы</div>
-            <div class="step-description">Выезд на участок и дополнительные услуги</div>
-        </div>
-
-        <div class="process-step">
-            <div class="step-circle">
-                <i class="fas fa-file-contract"></i>
-            </div>
-            <div class="step-title">Работа по договору</div>
-            <div class="step-description">Официальное сотрудничество и сдача объекта</div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2><i class="fas fa-handshake"></i> ЗНАКОМСТВО</h2>
-        <ul>
-            <li>Вы приходите к нам со своим проектом, либо заказываете у нас индивидуальный или готовый проект дома.
-            </li>
-            <li>Мы считаем предварительную смету на строительство коробки дома.</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2><i class="fas fa-gift"></i> НАШИ БЕСПЛАТНЫЕ БОНУСЫ ДЛЯ ЗНАКОМСТВА С НАШИМИ ПРИНЦИПАМИ РАБОТЫ</h2>
-        <ul>
-            <li>Выезжаем с вами на участок, уточняем важные моменты, предлагаем оптимальный вариант посадки дома на
-                участке, при необходимости делаем геологические изыскания (за отдельную плату).</li>
-            <li>Делаем чертеж посадки дома на участке согласно вашим пожеланиям и нашему опыту.</li>
-            <li>При необходимости адаптируем фундамент под условия участка и ваши пожелания.</li>
-            <li>Считаем окончательную смету, которая в дальнейшем меняется неизменной до конца строительства.</li>
-            <li>Проанализируем смету других компаний.</li>
-            <li>По вашему желанию организуем экскурсию по построенным и строящимся объектам, знакомимся с довольными
-                заказчиками.</li>
-        </ul>
-    </div>
-
-    <div class="section">
-        <h2><i class="fas fa-file-contract"></i> РАБОТА ПО ДОГОВОРУ</h2>
-        <ul>
-            <li>Подписываем договор и начинаем работу</li>
-            <li>Сдаем каждый этап по акту</li>
-            <li>Сдаем дом счастливым хозяевам</li>
-        </ul>
-    </div>
-
-
-    <!-- 5 фрейм -->
-
-    <div class="gray-container">
-        <div class="content-wrapper">
-            <div class="text-content">
-                <p class="main-text">Таким образом, по подписанию договора Вы получаете</p>
-                <p class="main-text">представление о нас, наших принципах работы и</p>
-                <p class="main-text">минимизируете риски работы с неизвестным подрядчиком</p>
-            </div>
-            <button class="orange-button">
-                Оставить заявку
-            </button>
-        </div>
-    </div>
-
-
-    <!-- 6 фрейм -->
-
-    <div class="container">
-        <header>
-            <h1>Услуги</h1>
-            <p class="subtitle">Проектирование, строительство и специализированные решения для вашего загородного дома
-            </p>
-        </header>
-
-        <main>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="images/d.png" alt="Проектирование загородных домов">
-                    </div>
-                    <div class="service-content">
-                        <h3>Проектирование загородных домов</h3>
-                        <p>Создание уникальных проектов с учётом пожеланий клиента и оптимизации пространства для
-                            комфортной жизни</p>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="images/d1.png" alt="Строительство загородных домов">
-                    </div>
-                    <div class="service-content">
-                        <h3>Строительство загородных домов</h3>
-                        <p>Качественное строительство загородных домов с использованием современных технологий и
-                            материалов</p>
-                    </div>
-                </div>
-
-                <div class="service-card">
-                    <div class="service-image">
-                        <img src="images/d2.png" alt="Благоустройство">
-                    </div>
-                    <div class="service-content">
-                        <h3>Благоустройство</h3>
-                        <p>Только сейчас, при заключении договора на строительство дома "под ключ", Вы получите проект
-                            ландшафтного дизайна в подарок</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-
-    <!-- 7 фрейм -->
-
-    <div class="frame-content">
-        <div class="contacts-section">
-            <h2 class="contacts-title">Контакты</h2>
-
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-phone"></i>
-                </div>
-                <div class="contact-text">
-                    8-812-642-99-04
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <div class="contact-text">
-                    ask.piter@bk.ru
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div class="contact-text">
-                    Бумажная ул., 16/1, оф. 613<br>
-                    Санкт-Петербург, Россия
-                </div>
-            </div>
-
-            <div class="contact-item">
-                <div class="contact-icon">
-                    <i class="fas fa-file-invoice"></i>
-                </div>
-                <div class="contact-text">
-                    ИНН 7804586892
-                </div>
-            </div>
-
-            <div class="divider"></div>
-
-
-            <iframe class="map-frame"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15993.549948862215!2d30.28668443022461!3d59.93105840000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4696310ab92e7a31%3A0x2d3e70c1bf1b918e!2z0JHRg9C70LrQuNC90YHQutC40Lkg0L_RgC3Rgi4sIDE2LzEsINCh0LDQvdC60YIt0J_QtdGC0LXRgNCx0YPRgNCzLCAxOTAyMDc!5e0!3m2!1sru!2sru!4v1651234567890!5m2!1sru!2sru"
-                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
-        </div>
-    </div>
-</div>
-
-
-<!-- 8 фрейм -->
-
-<footer>
-    <div class="footer-container">
-        <div class="logo">
-            <img src="images/a1.png" alt="Логотип компании" class="logo">
-        </div>
-        <button class="message-btn">
-            <i class="fas fa-paper-plane"></i>
-            Отправить нам сообщение
-        </button>
-    </div>
-</footer>
-
-
-</body>
-
-</html>
+{% endblock %}

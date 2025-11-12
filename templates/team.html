@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Наша команда{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Наша команда</h1>
+    
+    <div class="employees-section">
+        <h2>Сотрудники</h2>
+        <div class="employees-grid">
+            {% for employee in employees %}
+            <div class="employee-card">
+                <h3>{{ employee.full_name }}</h3>
+                <p><strong>Должность:</strong> {{ employee.position }}</p>
+                <p><strong>Отдел:</strong> {{ employee.department }}</p>
+                <p><strong>Дата приема:</strong> {{ employee.hire_date }}</p>
+            </div>
+            {% empty %}
+            <p>Сотрудники не добавлены</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="teams-section">
+        <h2>Бригады</h2>
+        <div class="teams-grid">
+            {% for team in teams %}
+            <div class="team-card">
+                <h3>Бригада {{ team.specialty }}</h3>
+                <p><strong>Ответственный:</strong> {{ team.employee.full_name }}</p>
+                <p><strong>Количество членов:</strong> {{ team.member_count }}</p>
+            </div>
+            {% empty %}
+            <p>Бригады не сформированы</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

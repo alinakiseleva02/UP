@@ -1,0 +1,18 @@
+{% load static %}
+<header class="header">
+    <div class="header__container">
+        <div class="header__logo">
+            <img src="{% static 'images/a1.png' %}" alt="Логотип компании" class="logo">
+        </div>
+        <nav class="header__nav">
+            <a href="{% url 'index' %}">Главная</a>
+            <a href="{% url 'projects' %}">Проекты</a>
+            <a href="{% url 'team' %}">Команда</a>
+            <a href="{% url 'materials' %}">Материалы</a>
+            <a href="{% url 'contacts' %}">Контакты</a>
+        </nav>
+        <div class="header__icon">
+            <img src="{% static 'images/a2.png' %}" alt="Иконка меню" class="icon">
+        </div>
+    </div>
+</header>

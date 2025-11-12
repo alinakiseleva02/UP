@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Строительные материалы{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Строительные материалы</h1>
+    
+    <div class="materials-grid">
+        {% for material in materials %}
+        <div class="material-card">
+            <h3>{{ material.name }}</h3>
+            <div class="material-details">
+                <p><strong>Цена за единицу:</strong> {{ material.unit_price }} руб.</p>
+                <p><strong>Доступное количество:</strong> {{ material.available_quantity }}</p>
+                <p><strong>Общая стоимость:</strong> {{ material.total_value }} руб.</p>
+            </div>
+        </div>
+        {% empty %}
+        <p>Материалы не добавлены</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+.material-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background: white;
+}
+</style>
+{% endblock %}

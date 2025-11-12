@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Наши проекты{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Наши проекты</h1>
+    
+    <div class="projects-list">
+        {% for project in projects %}
+        <div class="project-item">
+            <h3>{{ project.name }}</h3>
+            <div class="project-details">
+                <p><strong>Заказчик:</strong> {{ project.customer.company_name }}</p>
+                <p><strong>Ответственный:</strong> {{ project.employee.full_name }}</p>
+                <p><strong>Бюджет:</strong> {{ project.budget }} руб.</p>
+                <p><strong>Срок:</strong> {{ project.construction_period }} дней</p>
+                <p><strong>Начало:</strong> {{ project.start_date }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <p>Проекты пока не добавлены</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
