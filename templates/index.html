@@ -67,4 +67,27 @@
         </div>
     </div>
 </section>
+<section class="search-section">
+    <div class="search-container">
+        <h2 class="search-title">Найдите идеальный проект</h2>
+        <form class="search-form" method="get" action="{% url 'projects' %}">
+            <input 
+                type="text" 
+                name="q" 
+                class="search-input" 
+                placeholder="Например: загородный дом, коттедж, таунхаус..."
+            >
+            <button type="submit" class="search-button">
+                <i class="fas fa-search"></i> Найти
+            </button>
+        </form>
+        <div class="search-filters">
+            <div class="filter-chip active">Все проекты</div>
+            <div class="filter-chip">Загородные</div>
+            <div class="filter-chip">Таунхаусы</div>
+            <div class="filter-chip">Эконом</div>
+            <div class="filter-chip">Премиум</div>
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -4,23 +4,52 @@
 {% block title %}Наши проекты{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Наши проекты</h1>
-    
-    <div class="projects-list">
+<div class="page-hero projects-hero">
+    <div class="container">
+        <h1>Наши проекты</h1>
+        <p>Реализованные работы, которые говорят сами за себя</p>
+    </div>
+</div>
+
+<div class="container page-content">
+    <div class="projects-grid">
         {% for project in projects %}
-        <div class="project-item">
-            <h3>{{ project.name }}</h3>
+        <div class="project-card fade-in">
+            {% if project.image %}
+            <div class="project-image">
+                <img src="{{ project.image.url }}" alt="{{ project.name }}" class="project-img">
+            </div>
+            {% else %}
+            <div class="project-image placeholder-image">
+                <div class="placeholder-text">
+                    <i class="fas fa-home"></i>
+                    <span>Изображение проекта</span>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="project-header">
+                <h3>{{ project.name }}</h3>
+            </div>
+            
             <div class="project-details">
                 <p><strong>Заказчик:</strong> {{ project.customer.company_name }}</p>
                 <p><strong>Ответственный:</strong> {{ project.employee.full_name }}</p>
-                <p><strong>Бюджет:</strong> {{ project.budget }} руб.</p>
-                <p><strong>Срок:</strong> {{ project.construction_period }} дней</p>
-                <p><strong>Начало:</strong> {{ project.start_date }}</p>
+                <p><strong>Бюджет:</strong> {{ project.formatted_budget }}</p>
+                <p><strong>Срок:</strong> {{ project.formatted_construction_period }}</p>
+                <p><strong>Начало:</strong> {{ project.formatted_start_date }}</p>
+                
+                {% if project.description %}
+                <div class="project-description">
+                    <p>{{ project.description }}</p>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% empty %}
-        <p>Проекты пока не добавлены</p>
+        <div class="empty-state">
+            <p>Проекты пока не добавлены</p>
+        </div>
         {% endfor %}
     </div>
 </div>

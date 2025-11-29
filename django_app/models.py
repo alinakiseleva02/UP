@@ -55,6 +55,37 @@ class Projects(models.Model):
     employee = models.ForeignKey(Employees, on_delete=models.PROTECT, verbose_name='Сотрудник')
     customer = models.ForeignKey(Customers, on_delete=models.PROTECT, verbose_name='Заказчик')
     
+    image = models.ImageField(
+        upload_to='projects/', 
+        verbose_name='Изображение проекта',
+        blank=True, 
+        null=True
+    )
+    description = models.TextField(verbose_name='Описание проекта', blank=True)
+    
+    def formatted_budget(self):
+        return f"{self.budget:,.0f}".replace(',', ' ') + ' руб.'
+    
+    def formatted_start_date(self):
+        """Форматирует дату в русском формате"""
+        months = {
+            1: 'января', 2: 'февраля', 3: 'марта', 4: 'апреля',
+            5: 'мая', 6: 'июня', 7: 'июля', 8: 'августа',
+            9: 'сентября', 10: 'октября', 11: 'ноября', 12: 'декабря'
+        }
+        return f"{self.start_date.day} {months[self.start_date.month]} {self.start_date.year} г."
+    
+    def formatted_construction_period(self):
+        """Форматирует срок строительства"""
+        days = self.construction_period
+        if days >= 30:
+            months = days // 30
+            remaining_days = days % 30
+            if remaining_days > 0:
+                return f"{months} мес. {remaining_days} дн."
+            return f"{months} мес."
+        return f"{days} дн."
+
     class Meta:
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'

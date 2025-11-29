@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="page-hero contacts-hero">
+    <div class="container">
+        <h1>Контакты</h1>
+        <p>Свяжитесь с нами для консультации и начала сотрудничества</p>
+    </div>
+</div>
+
+<div class="container contacts-content">
+    <div class="contacts-grid">
+        <!-- Контактная информация -->
+        <div class="contact-info">
+            <h2>Наши контакты</h2>
+            
+            <div class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div class="contact-details">
+                    <h3>Телефоны</h3>
+                    <p><a href="tel:8-812-642-99-04" class="contact-link">8-812-642-99-04</a></p>
+                    <p><a href="tel:+7-999-123-45-67" class="contact-link">+7-999-123-45-67</a></p>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-details">
+                    <h3>Электронная почта</h3>
+                    <p><a href="mailto:ask.piter@bk.ru" class="contact-link">ask.piter@bk.ru</a></p>
+                    <p><a href="mailto:info@ardizzoni.ru" class="contact-link">info@ardizzoni.ru</a></p>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">🏢</div>
+                <div class="contact-details">
+                    <h3>Адрес офиса</h3>
+                    <p>Бумажная ул., 16/1, оф. 613</p>
+                    <p>Санкт-Петербург, Россия</p>
+                </div>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon">⏰</div>
+                <div class="contact-details">
+                    <h3>Режим работы</h3>
+                    <p>Пн-Пт: 9:00 - 18:00</p>
+                    <p>Сб: 10:00 - 16:00</p>
+                    <p>Вс: выходной</p>
+                </div>
+            </div>
+
+            <!-- Социальные сети -->
+            <div class="social-links">
+                <a href="#" class="social-link" title="WhatsApp">📱</a>
+                <a href="#" class="social-link" title="Telegram">✈️</a>
+                <a href="#" class="social-link" title="VK">👥</a>
+                <a href="#" class="social-link" title="Email">📧</a>
+            </div>
+        </div>
+        
+        <!-- Карта -->
+        <div class="map-container">
+            <h2>Мы на карте</h2>
+            <div class="map-placeholder">
+                📍 Карта: Санкт-Петербург, Бумажная ул., 16/1
+                <br>
+                <small>(здесь будет интерактивная карта)</small>
+            </div>
+            
+            <!-- Часы работы -->
+            <div class="business-hours">
+                <h3>Часы работы офиса</h3>
+                <ul class="hours-list">
+                    <li><span>Понедельник - Пятница:</span> <span>9:00 - 18:00</span></li>
+                    <li><span>Суббота:</span> <span>10:00 - 16:00</span></li>
+                    <li><span>Воскресенье:</span> <span>Выходной</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Форма обратной связи -->
+    <div class="contact-form-section">
+        <h2>Оставьте заявку</h2>
+        <form class="contact-form" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Ваше имя *</label>
+                <input type="text" id="name" name="name" required placeholder="Иван Иванов">
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Телефон *</label>
+                <input type="tel" id="phone" name="phone" required placeholder="+7 (999) 123-45-67">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="ivan@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="service">Интересующая услуга</label>
+                <select id="service" name="service">
+                    <option value="">Выберите услугу</option>
+                    <option value="construction">Строительство дома</option>
+                    <option value="project">Проектирование</option>
+                    <option value="consultation">Консультация</option>
+                    <option value="other">Другое</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Сообщение</label>
+                <textarea id="message" name="message" placeholder="Расскажите о вашем проекте..."></textarea>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                Отправить заявку
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
