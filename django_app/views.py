@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from .models import Projects, Employees, Materials, Teams, Customers
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from .models import Projects, Employees, Materials, Teams, Customers, Documents, ConstructionObjects
 
 def index(request):
     """Главная страница на основе вашего HTML"""
@@ -11,12 +12,42 @@ def index(request):
     return render(request, 'index.html', context)
 
 def projects_page(request):
-    """НОВАЯ СТРАНИЦА 1 - Проекты"""
+    """Страница проектов с поиском"""
+    search_query = request.GET.get('search', '')
     projects = Projects.objects.select_related('customer', 'employee').all()
-    return render(request, 'projects.html', {'projects': projects})
+    
+    if search_query:
+        projects = projects.filter(
+            Q(name__icontains=search_query) |
+            Q(description__icontains=search_query) |
+            Q(customer__company_name__icontains=search_query) |
+            Q(employee__full_name__icontains=search_query)
+        )
+    
+    return render(request, 'projects.html', {
+        'projects': projects,
+        'search_query': search_query
+    })
+
+def project_detail(request, project_id):
+    """Детальная страница проекта"""
+    project = get_object_or_404(
+        Projects.objects.select_related('customer', 'employee'), 
+        id=project_id
+    )
+    
+    # Получаем связанные данные
+    documents = Documents.objects.filter(project=project)
+    construction_objects = ConstructionObjects.objects.filter(project=project)
+    
+    return render(request, 'project_detail.html', {
+        'project': project,
+        'documents': documents,
+        'construction_objects': construction_objects
+    })
 
 def team_page(request):
-    """НОВАЯ СТРАНИЦА 2 - Команда"""
+    """Страница команды"""
     employees = Employees.objects.all()
     teams = Teams.objects.select_related('employee').all()
     return render(request, 'team.html', {
@@ -25,7 +56,7 @@ def team_page(request):
     })
 
 def materials_page(request):
-    """НОВАЯ СТРАНИЦА 3 - Материалы"""
+    """Страница материалов"""
     materials = Materials.objects.all()
     return render(request, 'materials.html', {'materials': materials})
 

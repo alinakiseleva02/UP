@@ -12,45 +12,459 @@
 </div>
 
 <div class="container page-content">
-    <div class="projects-grid">
-        {% for project in projects %}
-        <div class="project-card fade-in">
-            {% if project.image %}
-            <div class="project-image">
-                <img src="{{ project.image.url }}" alt="{{ project.name }}" class="project-img">
+    <!-- Поисковая строка -->
+    <div class="search-container">
+        <form method="GET" action="{% url 'projects' %}" class="search-form">
+            <div class="search-input-group">
+                <input 
+                    type="text" 
+                    name="search" 
+                    placeholder="Поиск по названию проекта, заказчику..." 
+                    value="{{ search_query }}"
+                    class="search-input"
+                >
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i> Найти
+                </button>
             </div>
-            {% else %}
-            <div class="project-image placeholder-image">
-                <div class="placeholder-text">
-                    <i class="fas fa-home"></i>
-                    <span>Изображение проекта</span>
-                </div>
+            {% if search_query %}
+            <div class="search-results-info">
+                <p>Найдено проектов: {{ projects.count }}</p>
+                <a href="{% url 'projects' %}" class="clear-search">
+                    <i class="fas fa-times"></i> Очистить поиск
+                </a>
             </div>
             {% endif %}
-            
-            <div class="project-header">
-                <h3>{{ project.name }}</h3>
-            </div>
-            
-            <div class="project-details">
-                <p><strong>Заказчик:</strong> {{ project.customer.company_name }}</p>
-                <p><strong>Ответственный:</strong> {{ project.employee.full_name }}</p>
-                <p><strong>Бюджет:</strong> {{ project.formatted_budget }}</p>
-                <p><strong>Срок:</strong> {{ project.formatted_construction_period }}</p>
-                <p><strong>Начало:</strong> {{ project.formatted_start_date }}</p>
-                
-                {% if project.description %}
-                <div class="project-description">
-                    <p>{{ project.description }}</p>
+        </form>
+    </div>
+
+    <div class="projects-grid">
+        {% for project in projects %}
+        <!-- Оберните всю карточку в ссылку -->
+        <a href="{% url 'project_detail' project.id %}" class="project-card-link">
+            <div class="project-card">
+                {% if project.image %}
+                <div class="project-image">
+                    <img src="{{ project.image.url }}" alt="{{ project.name }}" class="project-img">
+                    <div class="project-overlay">
+                        <span>Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="project-image placeholder-image">
+                    <div class="placeholder-text">
+                        <i class="fas fa-home"></i>
+                        <span>Изображение проекта</span>
+                    </div>
+                    <div class="project-overlay">
+                        <span>Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
                 </div>
                 {% endif %}
+                
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3>{{ project.name }}</h3>
+                    </div>
+                    
+                    <div class="project-details">
+                        <div class="detail-row">
+                            <i class="fas fa-building"></i>
+                            <span><strong>Заказчик:</strong> {{ project.customer.company_name }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>Ответственный:</strong> {{ project.employee.full_name }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span><strong>Бюджет:</strong> {{ project.formatted_budget }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span><strong>Срок:</strong> {{ project.formatted_construction_period }}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-calendar-check"></i>
+                            <span><strong>Начало:</strong> {{ project.formatted_start_date }}</span>
+                        </div>
+                    </div>
+                    
+                    {% if project.description %}
+                    <div class="project-description">
+                        <p>{{ project.description|truncatechars:150 }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="project-footer">
+                        <span class="click-hint">Нажмите для просмотра деталей</span>
+                    </div>
+                </div>
             </div>
-        </div>
+        </a>
         {% empty %}
         <div class="empty-state">
-            <p>Проекты пока не добавлены</p>
+            {% if search_query %}
+            <div class="empty-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3>Проекты не найдены</h3>
+            <p>Попробуйте изменить поисковый запрос</p>
+            <a href="{% url 'projects' %}" class="btn btn-primary">
+                Показать все проекты
+            </a>
+            {% else %}
+            <div class="empty-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <h3>Проекты пока не добавлены</h3>
+            <p>Вернитесь позже</p>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Стили для поиска */
+.search-container {
+    margin: 30px 0 40px;
+}
+
+.search-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-input-group {
+    display: flex;
+    border: 2px solid #000000;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,123,255,0.1);
+}
+
+.search-input {
+    flex: 1;
+    padding: 15px 25px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+    background: white;
+}
+
+.search-button {
+    background: linear-gradient(135deg, #000000, #000000);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.search-button:hover {
+    background: linear-gradient(135deg, #000000, #000000);
+}
+
+.search-results-info {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: #e7f1ff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clear-search {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.clear-search:hover {
+    text-decoration: underline;
+}
+
+/* Стили для карточек проектов */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.project-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.project-card-link:hover {
+    transform: translateY(-8px);
+}
+
+.project-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e9ecef;
+}
+
+.project-card-link:hover .project-card {
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    border-color: #000000;
+}
+
+.project-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.project-card-link:hover .project-img {
+    transform: scale(1.1);
+}
+
+.placeholder-image {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-text {
+    text-align: center;
+    color: #495057;
+}
+
+.placeholder-text i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    display: block;
+    color: #000000;
+}
+
+.placeholder-text span {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.project-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.project-card-link:hover .project-overlay {
+    opacity: 1;
+}
+
+.project-overlay span {
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.project-content {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-header {
+    margin-bottom: 20px;
+}
+
+.project-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.project-details {
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.detail-row i {
+    color: #000000;
+    width: 16px;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.detail-row span {
+    color: #495057;
+    line-height: 1.5;
+}
+
+.project-description {
+    margin-top: auto;
+    padding: 15px 0;
+    border-top: 1px solid #e9ecef;
+}
+
+.project-description p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.project-footer {
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.click-hint {
+    color: #000000;
+    font-size: 13px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.click-hint:before {
+    content: "👉";
+}
+
+/* Стили для пустого состояния */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.empty-icon {
+    font-size: 64px;
+    color: #000000;
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.empty-state h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 24px;
+}
+
+.empty-state p {
+    color: #6c757d;
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #000000;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    background: #000000;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Анимация появления карточек */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.project-card {
+    animation: fadeInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+/* Задержка анимации для каждой карточки */
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+.project-card:nth-child(5) { animation-delay: 0.5s; }
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-input-group {
+        flex-direction: column;
+        border-radius: 12px;
+    }
+    
+    .search-input {
+        padding: 15px;
+        border-bottom: 1px solid #dee2e6;
+    }
+    
+    .search-button {
+        padding: 12px;
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .project-image {
+        height: 180px;
+    }
+}
+</style>
 {% endblock %}

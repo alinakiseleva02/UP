@@ -1,0 +1,552 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.name }} - Детали проекта{% endblock %}
+
+{% block content %}
+<div class="page-hero project-detail-hero">
+    <div class="container">
+        <nav class="breadcrumb-nav">
+            <a href="{% url 'projects' %}" class="breadcrumb-link">
+                <i class="fas fa-arrow-left"></i> Назад к проектам
+            </a>
+        </nav>
+        <h1>{{ project.name }}</h1>
+        <div class="project-badges">
+            <span class="budget-badge">{{ project.formatted_budget }}</span>
+            <span class="duration-badge">{{ project.formatted_construction_period }}</span>
+            <span class="date-badge">Старт: {{ project.formatted_start_date }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="container page-content">
+    <div class="project-detail-wrapper">
+        <div class="project-main-content">
+            <div class="project-image-section">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.name }}" class="main-project-image">
+                {% else %}
+                <div class="project-image-placeholder">
+                    <i class="fas fa-home"></i>
+                    <span>Изображение проекта</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="project-description-section">
+                <h2><i class="fas fa-info-circle"></i> Описание проекта</h2>
+                {% if project.description %}
+                <div class="description-text">
+                    {{ project.description|linebreaks }}
+                </div>
+                {% else %}
+                <p class="no-description">Подробное описание проекта пока не добавлено.</p>
+                {% endif %}
+            </div>
+
+            {% if construction_objects %}
+            <div class="construction-objects-section">
+                <h2><i class="fas fa-hard-hat"></i> Строительные объекты</h2>
+                <div class="objects-list">
+                    {% for obj in construction_objects %}
+                    <div class="object-item">
+                        <div class="object-header">
+                            <h4><i class="fas fa-map-marker-alt"></i> {{ obj.address }}</h4>
+                            <span class="stage-tag">{{ obj.construction_stage }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if documents %}
+            <div class="documents-section">
+                <h2><i class="fas fa-file-alt"></i> Документы проекта</h2>
+                <div class="documents-list">
+                    {% for doc in documents %}
+                    <a href="{{ doc.file_link }}" target="_blank" class="document-item">
+                        <div class="document-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="document-info">
+                            <div class="document-title">{{ doc.title }}</div>
+                            <div class="document-date">{{ doc.creation_date|date:"d.m.Y" }}</div>
+                        </div>
+                        <div class="document-download">
+                            <i class="fas fa-download"></i>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="project-sidebar">
+            <div class="info-card">
+                <h3><i class="fas fa-building"></i> Информация о проекте</h3>
+                
+                <div class="info-section">
+                    <h4>Заказчик</h4>
+                    <div class="info-item">
+                        <strong>Компания:</strong>
+                        <span>{{ project.customer.company_name }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Контактное лицо:</strong>
+                        <span>{{ project.customer.contact_person }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Телефон:</strong>
+                        <span>{{ project.customer.phone_number }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Email:</strong>
+                        <span>{{ project.customer.email }}</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>Ответственный сотрудник</h4>
+                    <div class="info-item">
+                        <strong>ФИО:</strong>
+                        <span>{{ project.employee.full_name }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Должность:</strong>
+                        <span>{{ project.employee.position }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Отдел:</strong>
+                        <span>{{ project.employee.department }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Дата приема:</strong>
+                        <span>{{ project.employee.hire_date|date:"d.m.Y" }}</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>Финансы и сроки</h4>
+                    <div class="info-item">
+                        <strong>Бюджет проекта:</strong>
+                        <span class="budget-value">{{ project.formatted_budget }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Срок строительства:</strong>
+                        <span>{{ project.formatted_construction_period }}</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Дата начала:</strong>
+                        <span>{{ project.formatted_start_date }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="{% url 'projects' %}" class="back-to-projects-btn">
+                <i class="fas fa-arrow-left"></i> К списку проектов
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+
+.project-detail-hero {
+    background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+    color: white;
+    padding: 40px 0;
+    margin-bottom: 40px;
+}
+
+.breadcrumb-nav {
+    margin-bottom: 20px;
+}
+
+.breadcrumb-link {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.breadcrumb-link:hover {
+    color: white;
+}
+
+.project-detail-hero h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.project-badges {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.budget-badge, .duration-badge, .date-badge {
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.budget-badge {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 2px solid #28a745;
+}
+
+.duration-badge {
+    background: rgba(0, 123, 255, 0.2);
+    color: #000000;
+    border: 2px solid #000000;
+}
+
+.date-badge {
+    background: rgba(108, 117, 125, 0.2);
+    color: #6c757d;
+    border: 2px solid #6c757d;
+}
+
+/* Основной контейнер */
+.project-detail-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+@media (max-width: 992px) {
+    .project-detail-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Изображение проекта */
+.project-image-section {
+    margin-bottom: 30px;
+}
+
+.main-project-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.project-image-placeholder {
+    height: 300px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.project-image-placeholder i {
+    font-size: 64px;
+    margin-bottom: 15px;
+    color: #000000;
+    opacity: 0.7;
+}
+
+/* Описание проекта */
+.project-description-section {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+}
+
+.project-description-section h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.description-text {
+    line-height: 1.8;
+    color: #495057;
+    font-size: 16px;
+}
+
+.no-description {
+    color: #6c757d;
+    font-style: italic;
+    padding: 20px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Строительные объекты */
+.construction-objects-section {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+}
+
+.construction-objects-section h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.objects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.object-item {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #000000;
+}
+
+.object-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.object-header h4 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stage-tag {
+    background: #000000;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Документы */
+.documents-section {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+}
+
+.documents-section h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.documents-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.document-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+}
+
+.document-item:hover {
+    background: white;
+    border-color: #000000;
+    transform: translateX(5px);
+    box-shadow: 0 3px 10px rgba(0,123,255,0.1);
+}
+
+.document-icon {
+    color: #dc3545;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.document-info {
+    flex: 1;
+}
+
+.document-title {
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.document-date {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.document-download {
+    color: #000000;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.document-item:hover .document-download {
+    opacity: 1;
+}
+
+/* Боковая панель */
+.info-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    position: sticky;
+    top: 20px;
+}
+
+.info-card h3 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #000000;
+}
+
+.info-section {
+    margin-bottom: 25px;
+}
+
+.info-section:last-child {
+    margin-bottom: 0;
+}
+
+.info-section h4 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.info-item strong {
+    color: #495057;
+    font-weight: 500;
+}
+
+.info-item span {
+    color: #2c3e50;
+    font-weight: 500;
+    text-align: right;
+    max-width: 60%;
+}
+
+.budget-value {
+    color: #28a745 !important;
+    font-weight: 700 !important;
+}
+
+.back-to-projects-btn {
+    display: block;
+    text-align: center;
+    padding: 15px;
+    background: #000000;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.back-to-projects-btn:hover {
+    background: #000000;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .project-detail-hero h1 {
+        font-size: 28px;
+    }
+    
+    .project-badges {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .main-project-image {
+        height: 250px;
+    }
+    
+    .project-description-section,
+    .construction-objects-section,
+    .documents-section,
+    .info-card {
+        padding: 20px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .info-item span {
+        text-align: left;
+        max-width: 100%;
+    }
+}
+</style>
+{% endblock %}
