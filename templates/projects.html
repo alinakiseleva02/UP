@@ -12,7 +12,12 @@
 </div>
 
 <div class="container page-content">
-    <!-- Поисковая строка -->
+
+    <div class="projects-info">
+        <p>Всего проектов: {{ all_projects_count }}</p>
+    </div>
+    
+
     <div class="search-container">
         <form method="GET" action="{% url 'projects' %}" class="search-form">
             <div class="search-input-group">
@@ -29,9 +34,9 @@
             </div>
             {% if search_query %}
             <div class="search-results-info">
-                <p>Найдено проектов: {{ projects.count }}</p>
+                <p>По запросу "{{ search_query }}" найдено: {{ projects.count }} из {{ all_projects_count }}</p>
                 <a href="{% url 'projects' %}" class="clear-search">
-                    <i class="fas fa-times"></i> Очистить поиск
+                    <i class="fas fa-times"></i> Показать все проекты
                 </a>
             </div>
             {% endif %}
@@ -40,7 +45,7 @@
 
     <div class="projects-grid">
         {% for project in projects %}
-        <!-- Оберните всю карточку в ссылку -->
+
         <a href="{% url 'project_detail' project.id %}" class="project-card-link">
             <div class="project-card">
                 {% if project.image %}
